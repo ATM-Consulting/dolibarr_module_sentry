@@ -26,21 +26,33 @@ class mod_syslog_sentry extends LogHandler
 		$this->initHandler();
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getName(): string
 	{
 		return 'Sentry';
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getVersion(): string
 	{
 		return '1.0.0';
 	}
 
+	/**
+	 * @return int
+	 */
 	public function isActive(): int
 	{
 		return 1;
 	}
 
+	/**
+	 * @return array|array[]
+	 */
 	public function configure(): array
 	{
 		global $langs;
@@ -87,6 +99,9 @@ class mod_syslog_sentry extends LogHandler
 		];
 	}
 
+	/**
+	 * @return bool
+	 */
 	public function checkConfiguration(): bool
 	{
 		if (empty(GETPOST('SYSLOG_SENTRY_DSN_PHP', 'alpha'))) {
@@ -125,6 +140,11 @@ class mod_syslog_sentry extends LogHandler
 		return true;
 	}
 
+	/**
+	 * @param $content
+	 * @param $suffixinfilename
+	 * @return void
+	 */
 	public function export($content, $suffixinfilename = ''): void
 	{
 		$map = [
@@ -149,6 +169,9 @@ class mod_syslog_sentry extends LogHandler
 		}
 	}
 
+	/**
+	 * @return void
+	 */
 	public function initHandler(): void
 	{
 		$cnf = getDolGlobalString('SYSLOG_HANDLERS');
@@ -178,6 +201,11 @@ class mod_syslog_sentry extends LogHandler
 		}
 	}
 
+	/**
+	 * @param Throwable $e
+	 * @return void
+	 * @throws Throwable
+	 */
 	public function handleException(Throwable $e): void
 	{
 		if ($this->oldExceptionHandler) {
@@ -191,6 +219,16 @@ class mod_syslog_sentry extends LogHandler
 		$this->captureException($e, null, ['source' => 'sentry:handleException']);
 	}
 
+
+	/**
+	 * @param int $errno
+	 * @param string $errstr
+	 * @param string $errfile
+	 * @param int $errline
+	 * @param array $context
+	 * @return void
+	 * @throws ErrorException
+	 */
 	public function handleError(int $errno, string $errstr, string $errfile, int $errline, array $context = []): void
 	{
 		if ($this->oldErrorHandler) {
@@ -215,6 +253,11 @@ class mod_syslog_sentry extends LogHandler
 		}
 	}
 
+
+	/**
+	 * @param bool $isTest
+	 * @return bool|string
+	 */
 	private function initSentry(bool $isTest = false): bool|string
 	{
 		if (is_bool($this->isEnabled)) {
@@ -250,12 +293,22 @@ class mod_syslog_sentry extends LogHandler
 		return $this->isEnabled;
 	}
 
+
+	/**
+	 * @return false|string
+	 */
 	private function getUsername()
 	{
 		global $user;
 		return is_object($user) ? $user->login : false;
 	}
 
+
+	/**
+	 * @param Throwable $exception
+	 * @param array $trace
+	 * @return bool
+	 */
 	protected function addSourceFile(Throwable $exception, array $trace = []): bool
 	{
 		return !empty($trace[0]['file'])
@@ -264,6 +317,14 @@ class mod_syslog_sentry extends LogHandler
 			&& ($trace[0]['line'] === $exception->getLine());
 	}
 
+
+	/**
+	 * @param string $message
+	 * @param string $level
+	 * @param array $tags
+	 * @param bool $stack
+	 * @return string|false
+	 */
 	public function captureMessage(string $message, string $level = 'info', array $tags = [], bool $stack = false): string|false
 	{
 		return $this->capture([
@@ -275,6 +336,13 @@ class mod_syslog_sentry extends LogHandler
 		], $stack, $tags);
 	}
 
+
+	/**
+	 * @param Throwable $exception
+	 * @param string|null $customMessage
+	 * @param array $tags
+	 * @return string|false
+	 */
 	public function captureException(Throwable $exception, ?string $customMessage = null, array $tags = []): string|false
 	{
 		$message = $exception->getMessage() ?: '<unknown exception>';
@@ -341,6 +409,12 @@ class mod_syslog_sentry extends LogHandler
 		return $this->capture($data, $trace, $tags);
 	}
 
+
+	/**
+	 * @param string $dsn
+	 * @param array $options
+	 * @return void
+	 */
 	public function parseDSN(string $dsn, array $options): void
 	{
 		$url = parse_url($dsn);
@@ -404,6 +478,13 @@ class mod_syslog_sentry extends LogHandler
 		$this->tags = $options['tags'] ?? [];
 	}
 
+
+	/**
+	 * @param array $data
+	 * @param array|bool $stack
+	 * @param array $tags
+	 * @return string
+	 */
 	private function capture(array $data, array|bool $stack, array $tags = []): string
 	{
 		if ($this->initSentry() !== true) {
@@ -476,6 +557,11 @@ class mod_syslog_sentry extends LogHandler
 		return $eventId;
 	}
 
+
+	/**
+	 * @param array $data
+	 * @return bool
+	 */
 	private function send(array $data): bool
 	{
 		$message = base64_encode(gzcompress(json_encode($data)));
@@ -489,6 +575,13 @@ class mod_syslog_sentry extends LogHandler
 		]);
 	}
 
+
+	/**
+	 * @param string $url
+	 * @param string $data
+	 * @param array $headers
+	 * @return bool
+	 */
 	private function sendRemote(string $url, string $data, array $headers): bool
 	{
 		$parts = (array)parse_url($url);
@@ -511,6 +604,13 @@ class mod_syslog_sentry extends LogHandler
 		return $this->sendHttp($url, $data, $headers);
 	}
 
+
+	/**
+	 * @param string $netloc
+	 * @param string $data
+	 * @param string $headers
+	 * @return bool
+	 */
 	private function sendUdp(string $netloc, string $data, string $headers): bool
 	{
 		[$host, $port] = explode(':', $netloc);
@@ -523,6 +623,13 @@ class mod_syslog_sentry extends LogHandler
 		return true;
 	}
 
+
+	/**
+	 * @param string $url
+	 * @param string $data
+	 * @param array $headers
+	 * @return bool
+	 */
 	private function sendHttp(string $url, string $data, array $headers): bool
 	{
 		$newHeaders = [];
@@ -545,11 +652,26 @@ class mod_syslog_sentry extends LogHandler
 		return $code === 200;
 	}
 
+
+	/**
+	 * @param string $message
+	 * @param float $timestamp
+	 * @param string $key
+	 * @return string
+	 */
 	private function getSignature(string $message, float $timestamp, string $key): string
 	{
 		return hash_hmac('sha1', sprintf('%F', $timestamp) . ' ' . $message, $key);
 	}
 
+
+	/**
+	 * @param string $signature
+	 * @param float $timestamp
+	 * @param string $client
+	 * @param string|null $apiKey
+	 * @return string
+	 */
 	private function getAuthHeader(string $signature, float $timestamp, string $client, ?string $apiKey = null): string
 	{
 		$header = [
@@ -566,6 +688,11 @@ class mod_syslog_sentry extends LogHandler
 		return sprintf('Sentry %s', implode(', ', $header));
 	}
 
+
+	/**
+	 * @return string
+	 * @throws \Random\RandomException
+	 */
 	private function getUuid4(): string
 	{
 		return str_replace('-', '', sprintf(
@@ -586,6 +713,10 @@ class mod_syslog_sentry extends LogHandler
 		));
 	}
 
+
+	/**
+	 * @return string
+	 */
 	private function getCurrentUrl(): string
 	{
 		// When running from command line the REQUEST_URI is missing
@@ -602,6 +733,11 @@ class mod_syslog_sentry extends LogHandler
 		return $schema . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 	}
 
+
+	/**
+	 * @param array $data
+	 * @return array
+	 */
 	private function removeInvalidUtf8(array $data): array
 	{
 		if (!function_exists('mb_convert_encoding')) {
@@ -627,6 +763,11 @@ class mod_syslog_sentry extends LogHandler
 		return $data;
 	}
 
+
+	/**
+	 * @param array $stack
+	 * @return array
+	 */
 	private function getStackInfo(array $stack): array
 	{
 		$result = [];
@@ -678,6 +819,12 @@ class mod_syslog_sentry extends LogHandler
 		return array_reverse($result);
 	}
 
+
+	/**
+	 * @param string|null $fileName
+	 * @param int|null $lineNo
+	 * @return array
+	 */
 	private function readSourceFile(?string $fileName, ?int $lineNo): array
 	{
 		$frame = [
@@ -731,6 +878,12 @@ class mod_syslog_sentry extends LogHandler
 		return $frame;
 	}
 
+
+	/**
+	 * @param $value
+	 * @param $key
+	 * @return array|string
+	 */
 	private function apply($value, $key = null)
 	{
 		if (is_array($value)) {
@@ -744,6 +897,12 @@ class mod_syslog_sentry extends LogHandler
 		return $this->sanitize($key, $value);
 	}
 
+
+	/**
+	 * @param $key
+	 * @param $value
+	 * @return string
+	 */
 	private function sanitize($key, $value)
 	{
 
