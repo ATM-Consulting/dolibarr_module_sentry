@@ -8,3 +8,13 @@
 ModuleSentryName = Sentry
 # Module description 'ModuleSentryDesc'
 ModuleSentryDesc = Sentry connector for Dolibarr
+
+#
+# Sentry configuration
+#
+Sentry_LoggerName=Logger name
+Sentry_DSNForPHP=DSN for PHP
+Sentry_ReportAllErrors=Report all errors
+Sentry_DSNForJS=DSN for JS
+Sentry_TunnelForJS=Tunnel for JS
+Sentry_OptionsForJS=Options for JS
