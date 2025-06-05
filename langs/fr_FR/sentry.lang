@@ -12,12 +12,9 @@ ModuleSentryDesc = Connecteur Sentry pour Dolibarr
 #
 # Sentry configuration
 #
-LoggerName=Nom du logger
-DSNForPHP=DSN pour PHP
-ReportAllErrors=Rapporter toutes les erreurs
-DSNForJS=DSN pour JS
-TunnelForJS=Tunnel pour JS
-OptionsForJS=Options pour JS
-
-# Errors
-Error_SentryDSNForPHPRequired=Erreur : Le DSN Sentry pour PHP est requis.
+Sentry_LoggerName=Nom du logger
+Sentry_DSNForPHP=DSN pour PHP
+Sentry_ReportAllErrors=Rapporter toutes les erreurs
+Sentry_DSNForJS=DSN pour JS
+Sentry_TunnelForJS=Tunnel pour JS
+Sentry_OptionsForJS=Options pour JS
