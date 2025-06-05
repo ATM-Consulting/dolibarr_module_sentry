@@ -76,7 +76,7 @@ class modSentry extends DolibarrModules
 		$this->editor_squarred_logo = '';					// Must be image filename into the module/img directory followed with @modulename. Example: 'myimage.png@sentry'
 
 		// Possible values for version are: 'development', 'experimental', 'dolibarr', 'dolibarr_deprecated', 'experimental_deprecated' or a version string like 'x.y.z'
-		$this->version = '1.0';
+		$this->version = '1.0.0';
 		// Url to the file with your last numberversion of this module
 		//$this->url_last_version = 'http://www.example.com/versionmodule.txt';
 
@@ -495,6 +495,14 @@ class modSentry extends DolibarrModules
 	public function remove($options = '')
 	{
 		$sql = [];
+
+		$handlers = json_decode(dolibarr_get_const($this->db, 'SYSLOG_HANDLERS', 0), true);
+		$index = array_search('mod_syslog_sentry', $handlers, true);
+		if ($index !== false) {
+			unset($handlers[$index]);
+		}
+		dolibarr_set_const($this->db, 'SYSLOG_HANDLERS', json_encode($handlers), 'chaine', 0, '', 0);
+
 		return $this->_remove($sql, $options);
 	}
 }

@@ -43,40 +43,44 @@ class mod_syslog_sentry extends LogHandler
 
 	public function configure(): array
 	{
+		global $langs;
+
+		$langs->load('sentry@sentry');
+
 		return [
 			[
 				'constant' => 'SYSLOG_SENTRY_LOGGER',
-				'name' => 'Logger name',
+				'name' => $langs->trans('LoggerName'),
 				'default' => 'dolibarr',
 				'attr' => 'size="40"><br><span style="color:#767676;"><b>required</b>, example: <b>dolibarr</b></span></td><td class="left"></td></tr><tr class="oddeven"><td></td><td class="nowrap"',
 			],
 			[
 				'constant' => 'SYSLOG_SENTRY_DSN_PHP',
-				'name' => '<strong>DSN for PHP</strong>',
+				'name' => '<strong>'.$langs->trans('DNSForPHP').'</strong>',
 				'default' => '',
 				'attr' => 'size="85"><br><span style="color:#767676;"><b>required</b>, example: http://public:secret@sentry.example.com:9000/pid</span></td><td class="left"></td></tr><tr class="oddeven"><td></td><td class="nowrap"',
 			],
 			[
 				'constant' => 'SYSLOG_SENTRY_ALL_ERRORS',
-				'name' => 'Report all errors',
+				'name' => $langs->trans('ReportAllErrors'),
 				'default' => 'no',
 				'attr' => 'size="40"><br><span style="color:#767676;"><b>required</b>, <em>error_reporting(E_ALL)</em>, example: <b>yes</b> or <b>no</b></span></td><td class="left"></td></tr><tr class="oddeven"><td></td><td class="nowrap"',
 			],
 			[
 				'constant' => 'SYSLOG_SENTRY_DSN_JS',
-				'name' => '<strong>DSN for JS</strong>',
+				'name' => '<strong>'.$langs->trans('DSNForJS').'</strong>',
 				'default' => 'no',
 				'attr' => 'size="85"><br><span style="color:#767676;"><b>required</b>, example: http://public:secret@sentry.example.com:9000/pid or to disable: <b>no</b> or <b>disabled</b></span></td><td class="left"></td></tr><tr class="oddeven"><td></td><td class="nowrap"',
 			],
 			[
 				'constant' => 'SYSLOG_SENTRY_DSN_JS_TUNNEL',
-				'name' => 'Tunnel for JS',
+				'name' => $langs->trans('TunnelForJS'),
 				'default' => 'no',
 				'attr' => 'size="85"><br><span style="color:#767676;"><b>required</b>, <a href="https://docs.sentry.io/platforms/javascript/troubleshooting/">doc</a>, example: <code>/sentry</code> or to disable: <b>no</b> or <b>disabled</b></span></td><td class="left"></td></tr><tr class="oddeven"><td></td><td class="nowrap"',
 			],
 			[
 				'constant' => 'SYSLOG_SENTRY_DSN_JS_OPTIONS',
-				'name' => 'Options for JS',
+				'name' => $langs->trans('OptionsForJS'),
 				'default' => 'no',
 				'attr' => 'size="85"><br><span style="color:#767676;"><b>required</b>, <a href="https://docs.sentry.io/platforms/javascript/configuration/options/">doc</a>, must be JS compliant, example: <code style="display:block; margin:5px 0; line-height:1.2;">allowUrls: /example\.org/,<br>ignoreErrors: [\'ResizeObserver loop limit exceeded\', \'Failed to fetch\'],</code> or to disable: <b>no</b> or <b>disabled</b></span> <button type="button" onclick="test();" style="position:absolute; right:50px;">Test JS</button></td><td class="left"></td></tr><tr class="oddeven"><td></td><td class="nowrap"',
 			],
@@ -90,11 +94,11 @@ class mod_syslog_sentry extends LogHandler
 			return false;
 		}
 
-		$errors = '';
-		$initResult = $this->initSentry(true);
+		$errors = 0;
+		$initResult = $this->initSentry();
 
 		if ($initResult !== true) {
-			$errors = 'Can not connect to Sentry! ' . $initResult;
+			$errors++;
 		} else {
 			$result = $this->captureException(
 				new Exception('Sentry test from Dolibarr'),
