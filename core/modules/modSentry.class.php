@@ -90,7 +90,7 @@ class modSentry extends DolibarrModules
 		$this->picto = 'fa-file';
 
 		// Define some features supported by module (triggers, login, substitutions, menus, css, etc...)
-		$this->module_parts = array(
+		$this->module_parts = [
 			// Set this to 1 if module has its own trigger directory (core/triggers)
 			'triggers' => 0,
 			// Set this to 1 if module has its own login method file (core/login)
@@ -110,22 +110,19 @@ class modSentry extends DolibarrModules
 			// Set this to 1 if module has its own theme directory (theme)
 			'theme' => 0,
 			// Set this to relative path of css file if module has its own css file
-			'css' => array(
+			'css' => [
 				//    '/sentry/css/sentry.css.php',
-			),
+			],
 			// Set this to relative path of js file if module must load a js on all pages
-			'js' => array(
+			'js' => [
 				//   '/sentry/js/sentry.js.php',
-			),
+			],
+			'syslog' => 1, // Set this to 1 if module has its own syslog handler (core/modules/syslog)
 			// Set here all hooks context managed by module. To find available hook context, make a "grep -r '>initHooks(' *" on source code. You can also set hook context to 'all'
 			/* BEGIN MODULEBUILDER HOOKSCONTEXTS */
-			'hooks' => array(
-				//   'data' => array(
-				//       'hookcontext1',
-				//       'hookcontext2',
-				//   ),
-				//   'entity' => '0',
-			),
+			'hooks' => [
+				'main'
+			],
 			/* END MODULEBUILDER HOOKSCONTEXTS */
 			// Set this to 1 if features of module are opened to external users
 			'moduleforexternal' => 0,
@@ -133,38 +130,38 @@ class modSentry extends DolibarrModules
 			'websitetemplates' => 0,
 			// Set this to 1 if the module provides a captcha driver
 			'captcha' => 0
-		);
+		];
 
 		// Data directories to create when module is enabled.
 		// Example: this->dirs = array("/sentry/temp","/sentry/subdir");
-		$this->dirs = array("/sentry/temp");
+		$this->dirs = ["/sentry/temp"];
 
 		// Config pages. Put here list of php page, stored into sentry/admin directory, to use to setup module.
-		$this->config_page_url = array("setup.php@sentry");
+		$this->config_page_url = ["setup.php@sentry"];
 
 		// Dependencies
 		// A condition to hide module
 		$this->hidden = getDolGlobalInt('MODULE_SENTRY_DISABLED'); // A condition to disable module;
 		// List of module class names that must be enabled if this module is enabled. Example: array('always'=>array('modModuleToEnable1','modModuleToEnable2'), 'FR'=>array('modModuleToEnableFR')...)
-		$this->depends = array();
+		$this->depends = [];
 		// List of module class names to disable if this one is disabled. Example: array('modModuleToDisable1', ...)
-		$this->requiredby = array();
+		$this->requiredby = [];
 		// List of module class names this module is in conflict with. Example: array('modModuleToDisable1', ...)
-		$this->conflictwith = array();
+		$this->conflictwith = [];
 
 		// The language file dedicated to your module
-		$this->langfiles = array("sentry@sentry");
+		$this->langfiles = ["sentry@sentry"];
 
 		// Prerequisites
-		$this->phpmin = array(7, 1); // Minimum version of PHP required by module
+		$this->phpmin = [7, 1]; // Minimum version of PHP required by module
 		// $this->phpmax = array(8, 0); // Maximum version of PHP required by module
-		$this->need_dolibarr_version = array(19, -3); // Minimum version of Dolibarr required by module
+		$this->need_dolibarr_version = [19, -3]; // Minimum version of Dolibarr required by module
 		// $this->max_dolibarr_version = array(19, -3); // Maximum version of Dolibarr required by module
 		$this->need_javascript_ajax = 0;
 
 		// Messages at activation
-		$this->warnings_activation = array(); // Warning to show when we activate module. array('always'='text') or array('FR'='textfr','MX'='textmx'...)
-		$this->warnings_activation_ext = array(); // Warning to show when we activate an external module. array('always'='text') or array('FR'='textfr','MX'='textmx'...)
+		$this->warnings_activation = []; // Warning to show when we activate module. array('always'='text') or array('FR'='textfr','MX'='textmx'...)
+		$this->warnings_activation_ext = []; // Warning to show when we activate an external module. array('always'='text') or array('FR'='textfr','MX'='textmx'...)
 		//$this->automatic_activation = array('FR'=>'SentryWasAutomaticallyActivatedBecauseOfYourCountryChoice');
 		//$this->always_enabled = true;								// If true, can't be disabled
 
@@ -173,7 +170,7 @@ class modSentry extends DolibarrModules
 		// Example: $this->const=array(1 => array('SENTRY_MYNEWCONST1', 'chaine', 'myvalue', 'This is a constant to add', 1),
 		//                             2 => array('SENTRY_MYNEWCONST2', 'chaine', 'myvalue', 'This is another constant to add', 0, 'current', 1)
 		// );
-		$this->const = array();
+		$this->const = [];
 
 		// Some keys to add into the overwriting translation tables
 		/*$this->overwrite_translation = array(
@@ -188,7 +185,7 @@ class modSentry extends DolibarrModules
 
 		// Array to add new pages in new tabs
 		/* BEGIN MODULEBUILDER TABS */
-		$this->tabs = array();
+		$this->tabs = [];
 		/* END MODULEBUILDER TABS */
 		// Example:
 		// To add a new tab identified by code tabname1
@@ -248,26 +245,26 @@ class modSentry extends DolibarrModules
 		 );
 		 */
 		/* BEGIN MODULEBUILDER DICTIONARIES */
-		$this->dictionaries = array();
+		$this->dictionaries = [];
 		/* END MODULEBUILDER DICTIONARIES */
 
 		// Boxes/Widgets
 		// Add here list of php file(s) stored in sentry/core/boxes that contains a class to show a widget.
 		/* BEGIN MODULEBUILDER WIDGETS */
-		$this->boxes = array(
+		$this->boxes = [
 			//  0 => array(
 			//      'file' => 'sentrywidget1.php@sentry',
 			//      'note' => 'Widget provided by Sentry',
 			//      'enabledbydefaulton' => 'Home',
 			//  ),
 			//  ...
-		);
+		];
 		/* END MODULEBUILDER WIDGETS */
 
 		// Cronjobs (List of cron jobs entries to add when module is enabled)
 		// unit_frequency must be 60 for minute, 3600 for hour, 86400 for day, 604800 for week
 		/* BEGIN MODULEBUILDER CRON */
-		$this->cronjobs = array(
+		$this->cronjobs = [
 			//  0 => array(
 			//      'label' => 'MyJob label',
 			//      'jobtype' => 'method',
@@ -282,7 +279,7 @@ class modSentry extends DolibarrModules
 			//      'test' => 'isModEnabled("sentry")',
 			//      'priority' => 50,
 			//  ),
-		);
+		];
 		/* END MODULEBUILDER CRON */
 		// Example: $this->cronjobs=array(
 		//    0=>array('label'=>'My label', 'jobtype'=>'method', 'class'=>'/dir/class/file.class.php', 'objectname'=>'MyClass', 'method'=>'myMethod', 'parameters'=>'param1, param2', 'comment'=>'Comment', 'frequency'=>2, 'unitfrequency'=>3600, 'status'=>0, 'test'=>'isModEnabled("sentry")', 'priority'=>50),
@@ -290,7 +287,7 @@ class modSentry extends DolibarrModules
 		// );
 
 		// Permissions provided by this module
-		$this->rights = array();
+		$this->rights = [];
 		$r = 0;
 		// Add here entries to declare new permissions
 		/* BEGIN MODULEBUILDER PERMISSIONS */
@@ -316,25 +313,25 @@ class modSentry extends DolibarrModules
 
 
 		// Main menu entries to add
-		$this->menu = array();
+		$this->menu = [];
 		$r = 0;
 		// Add here entries to declare new menus
 		/* BEGIN MODULEBUILDER TOPMENU */
-		$this->menu[$r++] = array(
-			'fk_menu' => '', // Will be stored into mainmenu + leftmenu. Use '' if this is a top menu. For left menu, use 'fk_mainmenu=xxx' or 'fk_mainmenu=xxx,fk_leftmenu=yyy' where xxx is mainmenucode and yyy is a leftmenucode
-			'type' => 'top', // This is a Top menu entry
-			'titre' => 'ModuleSentryName',
-			'prefix' => img_picto('', $this->picto, 'class="pictofixedwidth valignmiddle"'),
-			'mainmenu' => 'sentry',
-			'leftmenu' => '',
-			'url' => '/sentry/sentryindex.php',
-			'langs' => 'sentry@sentry', // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
-			'position' => 1000 + $r,
-			'enabled' => 'isModEnabled("sentry")', // Define condition to show or hide menu entry. Use 'isModEnabled("sentry")' if entry must be visible if module is enabled.
-			'perms' => '1', // Use 'perms'=>'$user->hasRight("sentry", "myobject", "read")' if you want your menu with a permission rules
-			'target' => '',
-			'user' => 2, // 0=Menu for internal users, 1=external users, 2=both
-		);
+		$this->menu[$r++] = [
+			// 'fk_menu' => '', // Will be stored into mainmenu + leftmenu. Use '' if this is a top menu. For left menu, use 'fk_mainmenu=xxx' or 'fk_mainmenu=xxx,fk_leftmenu=yyy' where xxx is mainmenucode and yyy is a leftmenucode
+			// 'type' => 'top', // This is a Top menu entry
+			// 'titre' => 'ModuleSentryName',
+			// 'prefix' => img_picto('', $this->picto, 'class="pictofixedwidth valignmiddle"'),
+			// 'mainmenu' => 'sentry',
+			// 'leftmenu' => '',
+			// 'url' => '/sentry/sentryindex.php',
+			// 'langs' => 'sentry@sentry', // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
+			// 'position' => 1000 + $r,
+			// 'enabled' => 'isModEnabled("sentry")', // Define condition to show or hide menu entry. Use 'isModEnabled("sentry")' if entry must be visible if module is enabled.
+			// 'perms' => '1', // Use 'perms'=>'$user->hasRight("sentry", "myobject", "read")' if you want your menu with a permission rules
+			// 'target' => '',
+			// 'user' => 2, // 0=Menu for internal users, 1=external users, 2=both
+		];
 		/* END MODULEBUILDER TOPMENU */
 
 		/* BEGIN MODULEBUILDER LEFTMENU MYOBJECT */
@@ -430,14 +427,14 @@ class modSentry extends DolibarrModules
 		$this->import_icon[$r] = $this->picto;
 		$this->import_tables_array[$r] = array('t' => $this->db->prefix().'sentry_myobject', 'extra' => $this->db->prefix().'sentry_myobject_extrafields');
 		$this->import_tables_creator_array[$r] = array('t' => 'fk_user_author'); // Fields to store import user id
-		$import_sample = array();
+		$import_sample = [];
 		$keyforclass = 'MyObject'; $keyforclassfile='/sentry/class/myobject.class.php'; $keyforelement='myobject@sentry';
 		include DOL_DOCUMENT_ROOT.'/core/commonfieldsinimport.inc.php';
-		$import_extrafield_sample = array();
+		$import_extrafield_sample = [];
 		$keyforselect='myobject'; $keyforaliasextra='extra'; $keyforelement='myobject@sentry';
 		include DOL_DOCUMENT_ROOT.'/core/extrafieldsinimport.inc.php';
 		$this->import_fieldshidden_array[$r] = array('extra.fk_object' => 'lastrowid-'.$this->db->prefix().'sentry_myobject');
-		$this->import_regex_array[$r] = array();
+		$this->import_regex_array[$r] = [];
 		$this->import_examplevalues_array[$r] = array_merge($import_sample, $import_extrafield_sample);
 		$this->import_updatekeys_array[$r] = array('t.ref' => 'Ref');
 		$this->import_convertvalue_array[$r] = array(
@@ -452,7 +449,7 @@ class modSentry extends DolibarrModules
 			't.fk_user_valid' => array('rule' => 'fetchidfromref', 'file' => '/user/class/user.class.php', 'class' => 'User', 'method' => 'fetch', 'element' => 'user'),
 			't.fk_mode_reglement' => array('rule' => 'fetchidfromcodeorlabel', 'file' => '/compta/paiement/class/cpaiement.class.php', 'class' => 'Cpaiement', 'method' => 'fetch', 'element' => 'cpayment'),
 		);
-		$this->import_run_sql_after_array[$r] = array();
+		$this->import_run_sql_after_array[$r] = [];
 		$r++; */
 		/* END MODULEBUILDER IMPORT MYOBJECT */
 	}
@@ -476,51 +473,10 @@ class modSentry extends DolibarrModules
 			return -1; // Do not activate module if error 'not allowed' returned when loading module SQL queries (the _load_table run sql with run_sql with the error allowed parameter set to 'default')
 		}
 
-		// Create extrafields during init
-		//include_once DOL_DOCUMENT_ROOT.'/core/class/extrafields.class.php';
-		//$extrafields = new ExtraFields($this->db);
-		//$result0=$extrafields->addExtraField('sentry_separator1', "Separator 1", 'separator', 1,  0, 'thirdparty',   0, 0, '', array('options'=>array(1=>1)), 1, '', 1, 0, '', '', 'sentry@sentry', 'isModEnabled("sentry")');
-		//$result1=$extrafields->addExtraField('sentry_myattr1', "New Attr 1 label", 'boolean', 1,  3, 'thirdparty',   0, 0, '', '', 1, '', -1, 0, '', '', 'sentry@sentry', 'isModEnabled("sentry")');
-		//$result2=$extrafields->addExtraField('sentry_myattr2', "New Attr 2 label", 'varchar', 1, 10, 'project',      0, 0, '', '', 1, '', -1, 0, '', '', 'sentry@sentry', 'isModEnabled("sentry")');
-		//$result3=$extrafields->addExtraField('sentry_myattr3', "New Attr 3 label", 'varchar', 1, 10, 'bank_account', 0, 0, '', '', 1, '', -1, 0, '', '', 'sentry@sentry', 'isModEnabled("sentry")');
-		//$result4=$extrafields->addExtraField('sentry_myattr4', "New Attr 4 label", 'select',  1,  3, 'thirdparty',   0, 1, '', array('options'=>array('code1'=>'Val1','code2'=>'Val2','code3'=>'Val3')), 1,'', -1, 0, '', '', 'sentry@sentry', 'isModEnabled("sentry")');
-		//$result5=$extrafields->addExtraField('sentry_myattr5', "New Attr 5 label", 'text',    1, 10, 'user',         0, 0, '', '', 1, '', -1, 0, '', '', 'sentry@sentry', 'isModEnabled("sentry")');
-
 		// Permissions
 		$this->remove($options);
 
-		$sql = array();
-
-		// Document templates
-		$moduledir = dol_sanitizeFileName('sentry');
-		$myTmpObjects = array();
-		$myTmpObjects['MyObject'] = array('includerefgeneration' => 0, 'includedocgeneration' => 0);
-
-		foreach ($myTmpObjects as $myTmpObjectKey => $myTmpObjectArray) {
-			if ($myTmpObjectArray['includerefgeneration']) {
-				$src = DOL_DOCUMENT_ROOT.'/install/doctemplates/'.$moduledir.'/template_myobjects.odt';
-				$dirodt = DOL_DATA_ROOT.($conf->entity > 1 ? '/'.$conf->entity : '').'/doctemplates/'.$moduledir;
-				$dest = $dirodt.'/template_myobjects.odt';
-
-				if (file_exists($src) && !file_exists($dest)) {
-					require_once DOL_DOCUMENT_ROOT.'/core/lib/files.lib.php';
-					dol_mkdir($dirodt);
-					$result = dol_copy($src, $dest, '0', 0);
-					if ($result < 0) {
-						$langs->load("errors");
-						$this->error = $langs->trans('ErrorFailToCopyFile', $src, $dest);
-						return 0;
-					}
-				}
-
-				$sql = array_merge($sql, array(
-					"DELETE FROM ".$this->db->prefix()."document_model WHERE nom = 'standard_".strtolower($myTmpObjectKey)."' AND type = '".$this->db->escape(strtolower($myTmpObjectKey))."' AND entity = ".((int) $conf->entity),
-					"INSERT INTO ".$this->db->prefix()."document_model (nom, type, entity) VALUES('standard_".strtolower($myTmpObjectKey)."', '".$this->db->escape(strtolower($myTmpObjectKey))."', ".((int) $conf->entity).")",
-					"DELETE FROM ".$this->db->prefix()."document_model WHERE nom = 'generic_".strtolower($myTmpObjectKey)."_odt' AND type = '".$this->db->escape(strtolower($myTmpObjectKey))."' AND entity = ".((int) $conf->entity),
-					"INSERT INTO ".$this->db->prefix()."document_model (nom, type, entity) VALUES('generic_".strtolower($myTmpObjectKey)."_odt', '".$this->db->escape(strtolower($myTmpObjectKey))."', ".((int) $conf->entity).")"
-				));
-			}
-		}
+		$sql = [];
 
 		return $this->_init($sql, $options);
 	}
@@ -535,7 +491,7 @@ class modSentry extends DolibarrModules
 	 */
 	public function remove($options = '')
 	{
-		$sql = array();
+		$sql = [];
 		return $this->_remove($sql, $options);
 	}
 }
