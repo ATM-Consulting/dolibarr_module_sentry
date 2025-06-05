@@ -54,7 +54,7 @@ class modSentry extends DolibarrModules
 
 		// Family can be 'base' (core modules),'crm','financial','hr','projects','products','ecm','technic' (transverse modules),'interface' (link with external tools),'other','...'
 		// It is used to group modules by family in module setup page
-		$this->family = "other";
+		$this->family = "base";
 
 		// Module position in the family on 2 digits ('01', '10', '20', ...)
 		$this->module_position = '90';
@@ -87,7 +87,7 @@ class modSentry extends DolibarrModules
 		// If file is in theme/yourtheme/img directory under name object_pictovalue.png, use this->picto='pictovalue'
 		// If file is in module/img directory under name object_pictovalue.png, use this->picto='pictovalue@module'
 		// To use a supported fa-xxx css style of font awesome, use this->picto='xxx'
-		$this->picto = 'fa-file';
+		$this->picto = 'sentry@sentry';
 
 		// Define some features supported by module (triggers, login, substitutions, menus, css, etc...)
 		$this->module_parts = [
@@ -109,6 +109,8 @@ class modSentry extends DolibarrModules
 			'printing' => 0,
 			// Set this to 1 if module has its own theme directory (theme)
 			'theme' => 0,
+			// Set this to 1 if module has its own syslog handler (core/modules/syslog)
+			'syslog' => 1,
 			// Set this to relative path of css file if module has its own css file
 			'css' => [
 				//    '/sentry/css/sentry.css.php',
@@ -117,7 +119,6 @@ class modSentry extends DolibarrModules
 			'js' => [
 				//   '/sentry/js/sentry.js.php',
 			],
-			'syslog' => 1, // Set this to 1 if module has its own syslog handler (core/modules/syslog)
 			// Set here all hooks context managed by module. To find available hook context, make a "grep -r '>initHooks(' *" on source code. You can also set hook context to 'all'
 			/* BEGIN MODULEBUILDER HOOKSCONTEXTS */
 			'hooks' => [
@@ -137,13 +138,15 @@ class modSentry extends DolibarrModules
 		$this->dirs = ["/sentry/temp"];
 
 		// Config pages. Put here list of php page, stored into sentry/admin directory, to use to setup module.
-		$this->config_page_url = ["setup.php@sentry"];
+		$this->config_page_url = ["syslog.php"];
 
 		// Dependencies
 		// A condition to hide module
 		$this->hidden = getDolGlobalInt('MODULE_SENTRY_DISABLED'); // A condition to disable module;
 		// List of module class names that must be enabled if this module is enabled. Example: array('always'=>array('modModuleToEnable1','modModuleToEnable2'), 'FR'=>array('modModuleToEnableFR')...)
-		$this->depends = [];
+		$this->depends = [
+			'always' => ['modSyslog'], // This module depends on Syslog module
+		];
 		// List of module class names to disable if this one is disabled. Example: array('modModuleToDisable1', ...)
 		$this->requiredby = [];
 		// List of module class names this module is in conflict with. Example: array('modModuleToDisable1', ...)
