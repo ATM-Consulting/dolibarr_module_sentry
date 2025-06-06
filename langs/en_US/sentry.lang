@@ -7,36 +7,14 @@
 # Module label 'ModuleSentryName'
 ModuleSentryName = Sentry
 # Module description 'ModuleSentryDesc'
-ModuleSentryDesc = Sentry description
+ModuleSentryDesc = Sentry connector for Dolibarr
 
 #
-# Admin page
+# Sentry configuration
 #
-SentrySetup = Sentry setup
-Settings = Settings
-SentrySetupPage = Sentry setup page
-NewSection=New section
-SENTRY_MYPARAM1 = My param 1
-SENTRY_MYPARAM1Tooltip = My param 1 tooltip
-SENTRY_MYPARAM2=My param 2
-SENTRY_MYPARAM2Tooltip=My param 2 tooltip
-
-
-#
-# About page
-#
-About = About
-SentryAbout = About Sentry
-SentryAboutPage = Sentry about page
-
-#
-# Sample page
-#
-SentryArea = Home Sentry
-MyPageName = My page name
-
-#
-# Sample widget
-#
-MyWidget = My widget
-MyWidgetDescription = My widget description
+Sentry_LoggerName=Logger name
+Sentry_DSNForPHP=DSN for PHP
+Sentry_ReportAllErrors=Report all errors
+Sentry_DSNForJS=DSN for JS
+Sentry_TunnelForJS=Tunnel for JS
+Sentry_OptionsForJS=Options for JS
